@@ -2,94 +2,53 @@ package view;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
-import model.Block;
-import model.GameElement;
-import model.Pacman;
+import models.Block;
+import models.GameElement;
+import models.Pacman;
+import models.Pellet;
+import models.SuperPellet;
+import models.ghosts.Blinky;
+import models.ghosts.Clyde;
+import models.ghosts.Inky;
+import models.ghosts.Pinky;
 
 public class TextureFactory {
 	static TextureFactory instance;
+	
+	@SuppressWarnings("rawtypes")
 	HashMap<Class, Texture> hm = new HashMap<Class, Texture>();
-	// Terrain
-	Texture pellet, superPellet;
-	// Pacman
-	Texture pacmanBasic, pacmanLeft1, pacmanLeft2, pacmanRight1, pacmanRight2, pacmanUp1, pacmanUp2, pacmanDown1, pacmanDown2;
+
 	// Constructor
 	TextureFactory() {
 		super();
-		// Terrain
-		// Sortir tout ça
-		hm.put(Block.class, new Texture("block.png"));
-		hm.put(Pacman.class, new Texture("pacman-3.png"));
-		//hm.put("class model.Pellet", new Texture("pellet.png"));
+		// Terrain, eventually put that in ""
+		hm.put(Block.class, new Texture(Gdx.files.internal("block.png")));
+		hm.put(Pellet.class, new Texture(Gdx.files.internal("pellet.png")));
+		hm.put(SuperPellet.class, new Texture(Gdx.files.internal("superpellet.png")));		
 		
-		//block = new Texture("block.png");
-		superPellet = new Texture("superpellet.png");
-		// Pacman
-		pacmanBasic = new Texture("pacman-3.png");
-		pacmanLeft1 = new Texture("pacmanLeft.png");
-		pacmanLeft2= new Texture("pacmanLeft-2.png");
-		pacmanRight1 = new Texture("pacmanRight.png");
-		pacmanRight2 = new Texture("pacmanRight-2.png");
-		pacmanUp1 = new Texture("pacmanUp.png");
-		pacmanUp2 = new Texture("pacmanUp-2.png");
-		pacmanDown1 = new Texture("pacmanDown.png");
-		pacmanDown2 = new Texture("pacmanDown-2.png");
+		// Characters
+		hm.put(Pacman.class, new Texture(Gdx.files.internal("pacman-3.png")));
+		hm.put(Blinky.class, new Texture(Gdx.files.internal("ghost1.png")));
+		hm.put(Pinky.class, new Texture(Gdx.files.internal("ghost2.png")));
+		hm.put(Inky.class, new Texture(Gdx.files.internal("ghost3.png")));
+		hm.put(Clyde.class, new Texture(Gdx.files.internal("ghost4.png")));
 	}
-	
-	
-	public Texture getTexture(GameElement ge) {
-		return hm.get(ge.getClass());
-	}
-	
-	
-	///////////////////////////////////////////////
-	// -------------------------------------------- //	
-	//					- Terrain -					//
-	/*public Texture getBlockTexture() {
-		return block;
-	}*/
-	//					- /Terrain/ -				//
-	// -------------------------------------------- //	
-	//					- Pacman -					//
-	// Left
-	public Texture getPacmanTextureLeft1() {
-		return pacmanLeft1;
-	}
-	public Texture getPacmanTextureLeft2() {
-		return pacmanLeft2;
-	}
-	// Right
-	public Texture getPacmanTextureRight1() {
-		return pacmanRight1;
-	}
-	public Texture getPacmanTextureRight2() {
-		return pacmanRight2;
-	}
-	// Up
-	public Texture getPacmanTextureUp1() {
-		return pacmanUp1;
-	}
-	public Texture getPacmanTextureUp2() {
-		return pacmanUp2;
-	}
-	// Down
-	public Texture getPacmanTextureDown1() {
-		return pacmanDown1;
-	}
-	public Texture getPacmanTextureDown2() {
-		return pacmanDown2;
-	}
-	public Texture getPacmanBasic() {
-		return pacmanBasic;
-	}
-	
-	//					- /Pacman/ -				//
-	// -------------------------------------------- //
+
+	//					- /Functions/ -					//
+	// ------------------------------------------------ //
 	public static TextureFactory getInstance() {
 		if (instance == null)
 			return instance = new TextureFactory();
 		return instance;
 	}
+	
+	public Texture getTexture(GameElement ge) {
+		return hm.get(ge.getClass());
+	}
+	/*public Texture getTexture(GameElement ge, int direction) {
+		return hm.get(ge.getClass());
+	}*/
 }

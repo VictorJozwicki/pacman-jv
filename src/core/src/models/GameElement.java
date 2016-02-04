@@ -1,26 +1,27 @@
-package model;
+package models;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public class GameElement {
-	public Vector2 position;
-	public Texture texture;
-	
+	protected Vector2 position;
+	protected float width = 16, height = 16;
+
 	public GameElement() {
 		super();
 		this.setPosition(new Vector2());
 	}
+
+	// Getters & Setters
 	public void setPosition(Vector2 position) {
 		this.position = position;
 	}
 	public Vector2 getPosition() {
-		return null;
+		return this.position;
 	}
 	public float getWidth() {
-		return 1;
+		return this.width;
 	}
 	public float getHeight() {
-		return 1;
+		return this.height;
 	}
 }
