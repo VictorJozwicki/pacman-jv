@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Maze implements Iterable<GameElement> {
 	ArrayList<GameElement> l = new ArrayList<GameElement>();
 	int height, width;
-	int[][] mazeLevel = new int[][] {
+	int[][] mazeLevel = new int[][] { // 0 is pellet, 1 is block, 2 is super pellet, 3 is ghosts, 4 is pacman
 		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 		{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 		{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1 },
@@ -56,88 +56,25 @@ public class Maze implements Iterable<GameElement> {
 		System.out.println("Building : maze COMPLETED");
 	}
 	
-	/*public GameElement getElementAt(float x, float y, int direction) {
-		if( direction == 1 ) {
-			System.out.println("UP");
-			for (GameElement ge : l) {
-				for( int i = 0; i <= 15; i++) {
-					if( ge.getPosition().x == x+i && ge.getPosition().y == y+16 )
-						return ge;
-					if( ge.getPosition().x == x-i && ge.getPosition().y == y+16 )
-						return ge;
-				}
-			}	
-		} else if( direction == 2 ) {
-			System.out.println("RIGHT");
-			for (GameElement ge : l) {
-				for( int i = 0; i <= 15; i++) {
-					if( ge.getPosition().x == x+16 && ge.getPosition().y == y+i )
-						return ge;
-					if( ge.getPosition().x == x+16 && ge.getPosition().y == y-i )
-						return ge;
-				}
-			}
-		} else if( direction == 3 ) {
-			for (GameElement ge : l) {
-				for( int i = 0; i <= 15; i++) {
-					if( ge.getPosition().x == x+i && ge.getPosition().y == y-16 )
-						return ge;
-					if( ge.getPosition().x == x-i && ge.getPosition().y == y-16 )
-						return ge;
-				}
-			}
-		} else if( direction == 4 ) {
-			for (GameElement ge : l) {
-				for( int i = 0; i <= 15; i++) {
-					if( ge.getPosition().x == x-16 && ge.getPosition().y == y+i )
-						return ge;
-					if( ge.getPosition().x == x-16 && ge.getPosition().y == y-i )
-						return ge;
-				}
+	public GameElement getElementAt( float x, float y ) {
+		for( GameElement ge : l ) {
+			if( ge.getPosition().x == x && ge.getPosition().y == y ) {
+				return ge;
 			}
 		}
 		return null;
-	}*/
+	}
 	
-	public boolean getElementAt(float x, float y, int direction) {
-		if( direction == 1 && (x%16 != 0)) {
-			return true;
-		} else if( direction == 1 && (x%16 == 0)) {
-			for (GameElement ge : l) {
-				if( ge.getPosition().x == x && ge.getPosition().y == y+16 ) {
-					if(  ge != null && ge.getClass().getName().equals("models.Block") )
-						return true;
-				}	
-			}	
-		} else if( direction == 2 && (y%16 != 0)) {
-			return true;
-		} else if( direction == 2 && (y%16 == 0)) {
-			for (GameElement ge : l) {
-				if( ge.getPosition().x == x+16 && ge.getPosition().y == y ) {
-					if(  ge != null && ge.getClass().getName().equals("models.Block") )
-						return true;
-				}	
-			}
-		}else if( direction == 3 && (x%16 != 0) ) {
-			return true;
-		} else if( direction == 3 && (x%16 == 0) ) {
-			for (GameElement ge : l) {
-				if( ge.getPosition().x == x && ge.getPosition().y == y-16 ) {
-					if(  ge != null && ge.getClass().getName().equals("models.Block") )
-						return true;
-				}	
-			}
-		} else if( direction == 4  && (y%16 != 0)) {
-			return true;
-		} else if( direction == 4  && (y%16 == 0)) {
-			for (GameElement ge : l) {
-				if( ge.getPosition().x == x-16 && ge.getPosition().y == y ) {
-					if(  ge != null && ge.getClass().getName().equals("models.Block") )
-						return true;
-				}	
+	public void deleteElementAt( GameElement geToDelete ) {
+		for( GameElement ge : l ) {
+			if( ge.getPosition().x == geToDelete.getPosition().x && ge.getPosition().y == geToDelete.getPosition().y ) {
+				l.remove(geToDelete);
+				GameElement newGameElem = new GameElement();
+				newGameElem.setPosition(new Vector2(geToDelete.getPosition().x, geToDelete.getPosition().y));
+				l.add(newGameElem);
+				break;
 			}
 		}
-		return false;
 	}
 	
 	

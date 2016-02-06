@@ -1,8 +1,6 @@
 package screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 
 import models.World;
 import view.WorldRenderer;
@@ -11,9 +9,11 @@ public class GameScreen implements Screen {
 	World world;
 	WorldRenderer worldRenderer;
 	float foo = 0;
+	boolean firstRender = true;
 	
 	public GameScreen() {
 		super();
+		this.dispose();
 		world = new World();
 		worldRenderer = new WorldRenderer(world);
 	}
@@ -25,8 +25,6 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0, 0);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		worldRenderer.render(delta);
 	}
 	
@@ -58,7 +56,5 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		world = null;
 		worldRenderer = null;
-		world.pacmanBeginningMusic.dispose();
 	}
-
 }
