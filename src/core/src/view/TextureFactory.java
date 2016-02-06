@@ -25,7 +25,7 @@ public class TextureFactory {
 	TextureFactory() {
 		super();
 		// Terrain, eventually put that in ""
-		hm.put(Block.class, new Texture(Gdx.files.internal("block.png")));
+		hm.put(Block.class, new Texture(Gdx.files.internal("snow_block.png"))); // Snow_Block
 		hm.put(Pellet.class, new Texture(Gdx.files.internal("pellet.png")));
 		hm.put(SuperPellet.class, new Texture(Gdx.files.internal("superpellet.png")));		
 		
@@ -48,7 +48,14 @@ public class TextureFactory {
 	public Texture getTexture(GameElement ge) {
 		return hm.get(ge.getClass());
 	}
-	/*public Texture getTexture(GameElement ge, int direction) {
-		return hm.get(ge.getClass());
-	}*/
+	public void setOtherTexture( GameElement ge, String direction, String animation, String extension ) {
+		if( ge.getClass() == Pacman.class && direction != null) {
+			String textureName = null;
+			if( animation != null )
+				textureName = "pacman" + direction + animation + extension;
+			else
+				textureName = "pacman" + direction + extension;
+			hm.replace(Pacman.class, new Texture(Gdx.files.internal(textureName)));
+		}
+	}
 }
