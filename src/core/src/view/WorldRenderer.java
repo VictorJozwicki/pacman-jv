@@ -103,9 +103,9 @@ public class WorldRenderer {
 		float pacmanX = world.getPacman().getPosition().x, pacmanY = world.getPacman().getPosition().y;
 		
 		// Teleporation (tunnels)
-		if( pacmanX == 0.0 && pacmanY == 256 && currentDirection == 4)
+		if( pacmanX == 0.0 && pacmanY == 256 && currentDirection == LEFT)
 			world.getPacman().setPosition(new Vector2(432,256));
-		if( pacmanX == 432 && pacmanY == 256 && currentDirection == 2)
+		if( pacmanX == 432 && pacmanY == 256 && currentDirection == RIGHT)
 			world.getPacman().setPosition(new Vector2(0,256));
 
 		// It's when I check for collisions
