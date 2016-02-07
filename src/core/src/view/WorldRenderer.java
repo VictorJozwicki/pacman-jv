@@ -112,23 +112,23 @@ public class WorldRenderer {
 		if( pacmanX%16 == 0 && pacmanY%16 == 0) {
 			this.checkForPellets(pacmanX, pacmanY);
 			// Checking if there is an element in all directions for NEXT direction
-			if( this.nextDirection == 1 ) { // UP
+			if( this.nextDirection == UP ) {
 				elementAtNext = world.getMaze().getElementAt(pacmanX, pacmanY+16);
-			} else if ( this.nextDirection == 2 ) { // RIGHT
+			} else if ( this.nextDirection == RIGHT ) {
 				elementAtNext = world.getMaze().getElementAt(pacmanX+16, pacmanY);
-			} else if ( this.nextDirection == 3 ) { // DOWN
+			} else if ( this.nextDirection == DOWN ) {
 				elementAtNext = world.getMaze().getElementAt(pacmanX, pacmanY-16);
-			} else if ( this.nextDirection == 4 ) { // LEFT
+			} else if ( this.nextDirection == LEFT ) {
 				elementAtNext = world.getMaze().getElementAt(pacmanX-16, pacmanY);
 			}
 			// Checking if there is an element in all directions for CURRENT direction
-			if( this.currentDirection == 1 ) { // UP
+			if( this.currentDirection == UP ) {
 				elementAtCurrent = world.getMaze().getElementAt(pacmanX, pacmanY+16);
-			} else if ( this.currentDirection == 2 ) { // RIGHT
+			} else if ( this.currentDirection == RIGHT ) {
 				elementAtCurrent = world.getMaze().getElementAt(pacmanX+16, pacmanY);
-			} else if ( this.currentDirection == 3 ) { // DOWN
+			} else if ( this.currentDirection == DOWN ) {
 				elementAtCurrent = world.getMaze().getElementAt(pacmanX, pacmanY-16);
-			} else if ( this.currentDirection == 4 ) { // LEFT
+			} else if ( this.currentDirection == LEFT ) {
 				elementAtCurrent = world.getMaze().getElementAt(pacmanX-16, pacmanY);
 			}
 			
@@ -137,13 +137,13 @@ public class WorldRenderer {
 				if( elementAtNext != null && !elementAtNext.getClass().getName().equals("models.Block") ) {
 					// Update current direction with next
 					currentDirection = nextDirection;
-					if( this.currentDirection == 1 ) { // UP
+					if( this.currentDirection == UP ) {
 						speedVector = new Vector2(0, pacmanMovementSpeed);
-					} else if ( this.currentDirection == 2 ) { // RIGHT
+					} else if ( this.currentDirection == RIGHT ) {
 						speedVector = new Vector2(pacmanMovementSpeed, 0);
-					} else if ( this.currentDirection == 3 ) { // DOWN
+					} else if ( this.currentDirection == DOWN ) {
 						speedVector = new Vector2(0, -pacmanMovementSpeed);
-					} else if ( this.currentDirection == 4 ) { // LEFT
+					} else if ( this.currentDirection == LEFT ) {
 						speedVector = new Vector2(-pacmanMovementSpeed, 0);
 					}
 					this.world.getPacman().getPosition().add(speedVector);
@@ -165,13 +165,13 @@ public class WorldRenderer {
 	private void pacmanAnimation() {
 		String direction = null;
 		// Building the direction to know which texture to call
-		if( this.currentDirection == 1 )
+		if( this.currentDirection == UP )
 			direction = "Up";
-		else if( this.currentDirection == 2 )
+		else if( this.currentDirection == RIGHT )
 			direction = "Right";
-		else if( this.currentDirection == 3 )
+		else if( this.currentDirection == DOWN )
 			direction = "Down";
-		else if( this.currentDirection == 4 )
+		else if( this.currentDirection == LEFT )
 			direction = "Left";
 		// Trying to do so I don't call 10x the same texture per cycles
 		if( this.animationTime == animationSpeed ) {
