@@ -264,14 +264,14 @@ public class WorldRenderer {
 		if( bool && !isMuted ) {
 			pacmanBeginningMusic = Gdx.audio.newSound(Gdx.files.internal("music/pacman_beginning.mp3"));
 			pacmanBeginningMusic.play();
-		} else
+		} else if ( pacmanBeginningMusic != null )
 			pacmanBeginningMusic.stop();
 	}
 	private void pacmanDeath(boolean bool) {
 		if( bool && !isMuted ) {
 			pacmanDeath = Gdx.audio.newSound(Gdx.files.internal("music/pacman_death.mp3"));
 			pacmanDeath.play();
-		} else
+		} else if ( pacmanDeath != null )
 			pacmanDeath.stop();
 	}
 	// Music --> repeated or played
