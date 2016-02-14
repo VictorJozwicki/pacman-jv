@@ -1,4 +1,4 @@
-# PacmanJV
+# pacman-jv
 A JAVA project using libgdx
 
 ## Project made during school
