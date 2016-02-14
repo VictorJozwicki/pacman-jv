@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 
 import screens.GameScreen;
 
-public class MyGdxGame extends Game {
+public class PacmanJV extends Game {
 	FPSLogger fps;
 	
 	@Override

@@ -13,12 +13,12 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "PacmanJV"
-        gdxVersion = '1.9.0'
+        appName = "pacman-jv"
+        gdxVersion = '1.9.2'
         roboVMVersion = '1.12.0'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
-        aiVersion = '1.7.0'
+        aiVersion = '1.8.0'
     }
 
     repositories {
