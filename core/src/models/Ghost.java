@@ -9,4 +9,8 @@ public class Ghost extends GameElement {
 		super();
 		this.setPosition(position);
 	}
+
+	public boolean move(Vector2 position) {
+		return false;
+	}
 }

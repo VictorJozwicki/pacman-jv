@@ -19,10 +19,11 @@ public class WorldRenderer {
 	private World world;
 	private SpriteBatch batch = new SpriteBatch();
 	private BitmapFont muted = new BitmapFont(), scoreBitmap = new BitmapFont();
-	private float pacmanMovementSpeed = 1f, blinkyMovementSpeed = 0.5f;
-	private boolean isMuted = false, dead = false;
+	private float pacmanMovementSpeed = 1f;
+	private boolean isMuted = false, dead = false, win = false;
 	private Vector2 speedVector = new Vector2(0,0);
 	private float scoreMultiplicator = 1, scorePellet = 12, scoreSuperPellet = 500, score = scorePellet * scoreMultiplicator;
+	private int remainingPellets;
 	// Collisions detection
 	private GameElement elementAt, elementAtNext, elementAtCurrent;
 	// Animations
@@ -43,6 +44,7 @@ public class WorldRenderer {
 	public WorldRenderer(World world) {
 		super();
 		this.world = world;
+		remainingPellets = this.world.getMaze().numberPellets;
 	}
 
 	// Functions
@@ -80,7 +82,18 @@ public class WorldRenderer {
 			// Collisions
 			this.checkCollisions();
 			// Move blinky
-			this.moveBlinky();
+			if( !dead & world.getBlinky().move(world.getPacman().getPosition()) ) {
+				dead = true;
+				this.pacmanDeath(true);
+				this.pacmanWakaWaka(false);
+				this.ghostSiren(false);
+			}
+			if( remainingPellets == 0 ) {
+				dead = true;
+				this.pacmanWakaWaka(false);
+				this.ghostSiren(false);
+				win = true;
+			}
 			//this.moveInky();
 			// Directions
 			if (Gdx.input.isKeyPressed(Keys.Z))
@@ -96,6 +109,8 @@ public class WorldRenderer {
 		this.showMuted();
 		// Show score
 		this.showScore();
+		// Show if won
+		this.showWin();
 	}
 	
 	private void checkCollisions() {
@@ -196,11 +211,13 @@ public class WorldRenderer {
 				world.getMaze().deleteElementAt(elementAt);
 				this.pacmanWakaWaka(true);
 				score = score + (scoreMultiplicator * scorePellet);
+				remainingPellets--;
 			}
 			if ( elementAt.getClass().equals(SuperPellet.class) ) {
 				world.getMaze().deleteElementAt(elementAt);
 				this.pacmanWakaWaka(true);
 				score = score + (scoreMultiplicator * scoreSuperPellet);
+				remainingPellets--;
 			}
 		}
 	}
@@ -219,27 +236,7 @@ public class WorldRenderer {
 			}
 		}
 	}
-	
-	private void moveBlinky() { // Probably useless
-		Vector2 pacmanPos = world.getPacman().getPosition();
-		if( !dead ) {
-			if( world.getBlinky().getPosition().x < pacmanPos.x)
-				world.getBlinky().setPosition(new Vector2(world.getBlinky().getPosition().x+blinkyMovementSpeed, world.getBlinky().getPosition().y));
-			if( world.getBlinky().getPosition().x > pacmanPos.x)
-				world.getBlinky().setPosition(new Vector2(world.getBlinky().getPosition().x-blinkyMovementSpeed, world.getBlinky().getPosition().y));
-			if( world.getBlinky().getPosition().y < pacmanPos.y)
-				world.getBlinky().setPosition(new Vector2(world.getBlinky().getPosition().x, world.getBlinky().getPosition().y+blinkyMovementSpeed));
-			if( world.getBlinky().getPosition().y > pacmanPos.y)
-				world.getBlinky().setPosition(new Vector2(world.getBlinky().getPosition().x, world.getBlinky().getPosition().y-blinkyMovementSpeed));
-			if( (world.getBlinky().getPosition().x == pacmanPos.x) && (world.getBlinky().getPosition().y == pacmanPos.y)) {
-				dead = true;
-				this.pacmanDeath(true);
-				this.pacmanWakaWaka(false);
-				this.ghostSiren(false);
-			}
-		}
-	}
-	
+	// Messages and such
 	private void showMuted() {
 		if( showMessageMuted ) {
 			batch.begin();
@@ -250,7 +247,14 @@ public class WorldRenderer {
 			showMessageMuted = false;
 		}
 	}
-	
+	private void showWin() {
+		if( win ) {
+			batch.begin();
+				scoreBitmap.setColor(1, 0, 0, 1);
+				scoreBitmap.draw(batch, "YOU WIN", 467, 200);
+			batch.end();	
+		}
+	}
 	private void showScore() {
 		batch.begin();
 			scoreBitmap.setColor(1, 0, 0, 1);
@@ -285,9 +289,8 @@ public class WorldRenderer {
 		}
 	}
 	private void ghostSiren(boolean bool) {
-		
 		if( bool && !isMuted && !ghostSirenIsPlaying ) {
-			ghostSiren = Gdx.audio.newMusic(Gdx.files.internal("music/ghost_siren.wav"));
+			ghostSiren = Gdx.audio.newMusic(Gdx.files.internal("music/ghost_siren.mp3"));
 			ghostSiren.setLooping(bool);
 			ghostSiren.play();
 			ghostSirenIsPlaying = true;

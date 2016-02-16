@@ -6,10 +6,8 @@ import models.World;
 import view.WorldRenderer;
 
 public class GameScreen implements Screen {
-	World world;
-	WorldRenderer worldRenderer;
-	float foo = 0;
-	boolean firstRender = true;
+	private World world;
+	private WorldRenderer worldRenderer;
 	
 	public GameScreen() {
 		super();

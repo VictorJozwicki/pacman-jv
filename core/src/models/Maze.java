@@ -6,9 +6,10 @@ import java.util.Iterator;
 import com.badlogic.gdx.math.Vector2;
 
 public class Maze implements Iterable<GameElement> {
-	ArrayList<GameElement> l = new ArrayList<GameElement>();
-	int height, width;
-	int[][] mazeLevel = new int[][] { // 0 is pellet, 1 is block, 2 is super pellet, 3 is ghosts, 4 is pacman
+	private ArrayList<GameElement> l = new ArrayList<GameElement>();
+	private int height;
+	public int numberPellets = 0;
+	int[][] mazeLevel = new int[][] { // 0 is pellet, 1 is block, 2 is super pellet, 3 is ghosts, 4 is pacman, 5 is void
 		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 		{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 		{ 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1 },
@@ -21,9 +22,9 @@ public class Maze implements Iterable<GameElement> {
 		{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
 		{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
 		{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
-		{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
-		{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
-		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 3, 3, 3, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+		{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 5, 5, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
+		{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 5, 5, 5, 5, 5, 5, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
+		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 3, 3, 3, 3, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 		{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
 		{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
 		{ 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1 },
@@ -47,7 +48,6 @@ public class Maze implements Iterable<GameElement> {
 		super();
 		System.out.println("Building : maze");
 		height = mazeLevel.length;
-		width = mazeLevel[0].length;
 		for( int y = 0; y <= mazeLevel.length-1; y++) {
 			height--;
 			for( int i = 0; i <= mazeLevel[height].length-1; i++ )
@@ -82,10 +82,12 @@ public class Maze implements Iterable<GameElement> {
 	private void whichElement(int element, int x, int y) {
 		switch (element) {
 			case 0: l.add(new Pellet(new Vector2(x*16, y*16)));
+					numberPellets++;
 					break;
 			case 1: l.add(new Block(new Vector2(x*16, y*16)));
 					break;
 			case 2: l.add(new SuperPellet(new Vector2(x*16, y*16)));
+					numberPellets++;
 					break;
 		}
 	}
