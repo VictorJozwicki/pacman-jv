@@ -32,7 +32,7 @@ public class WorldRenderer {
 	private int nextDirection = 0, currentDirection = 0;
 	private int UP = 1, RIGHT = 2, DOWN = 3, LEFT = 4;
 	// Other
-	private boolean canMove = false, isFirstRender = true, showMessageMuted = false, ghostSirenIsPlaying = false;
+	private boolean canMove = true, isFirstRender = true, showMessageMuted = false, ghostSirenIsPlaying = false;
 	private float timeBeforeMoving = 4.5f/* 4.5 is the length of the beginning music */, timeSinceFirstRender = 0, timeSinceLastRender = 0;
 	private String extension = ".png";
 	// Music -- Probably in a music manager, maybe with a HashMap<String, Music>
@@ -82,7 +82,7 @@ public class WorldRenderer {
 			// Collisions
 			this.checkCollisions();
 			// Move blinky
-			if( !dead & world.getBlinky().move(world.getPacman().getPosition()) ) {
+			if( !dead & (world.getBlinky().move(world.getPacman().getPosition(), this.world) || world.getClyde().move(world.getPacman().getPosition(), this.world)) ) {
 				dead = true;
 				this.pacmanDeath(true);
 				this.pacmanWakaWaka(false);

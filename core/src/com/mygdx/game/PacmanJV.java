@@ -28,7 +28,6 @@ public class PacmanJV extends Game {
 			newGame();
 		}	
 	}
-	
 	public void newGame() {
 		setScreen(new GameScreen());
 	}
