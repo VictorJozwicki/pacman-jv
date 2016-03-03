@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 
 import screens.GameScreen;
+import screens.MenuScreen;
 
 public class PacmanJV extends Game {
 	FPSLogger fps;
@@ -14,7 +15,7 @@ public class PacmanJV extends Game {
 	@Override
 	public void create () {
 		// Create a new screen
-		newGame();
+		setScreen(new MenuScreen());
 		fps = new FPSLogger();
 	}
 
@@ -24,11 +25,10 @@ public class PacmanJV extends Game {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		super.render();
 		fps.log();
-		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-			newGame();
-		}	
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER))
+			newGame();	
 	}
 	public void newGame() {
-		setScreen(new GameScreen());
+		setScreen(new GameScreen(this));
 	}
 }

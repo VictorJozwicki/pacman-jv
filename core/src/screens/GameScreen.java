@@ -1,6 +1,7 @@
 package screens;
 
 import com.badlogic.gdx.Screen;
+import com.mygdx.game.PacmanJV;
 
 import models.World;
 import view.WorldRenderer;
@@ -9,11 +10,11 @@ public class GameScreen implements Screen {
 	private World world;
 	private WorldRenderer worldRenderer;
 	
-	public GameScreen() {
+	public GameScreen(PacmanJV pacmanJV) {
 		super();
 		this.dispose();
 		world = new World();
-		worldRenderer = new WorldRenderer(world);
+		worldRenderer = new WorldRenderer(world, pacmanJV);
 	}
 	
 	@Override
@@ -24,6 +25,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		worldRenderer.render(delta);
+
 	}
 	
 	@Override

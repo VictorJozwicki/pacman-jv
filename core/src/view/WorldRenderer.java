@@ -7,11 +7,13 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.PacmanJV;
 
 import models.GameElement;
 import models.Pellet;
 import models.SuperPellet;
 import models.World;
+import screens.WinScreen;
 
 public class WorldRenderer {
 	// ------------------------------ VARIABLES ------------------------------
@@ -20,7 +22,7 @@ public class WorldRenderer {
 	private SpriteBatch batch = new SpriteBatch();
 	private BitmapFont muted = new BitmapFont(), scoreBitmap = new BitmapFont();
 	private float pacmanMovementSpeed = 1f;
-	private boolean isMuted = false, dead = false, win = false;
+	public boolean isMuted = false, dead = false, win = false;
 	private Vector2 speedVector = new Vector2(0,0);
 	private float scoreMultiplicator = 1, scorePellet = 12, scoreSuperPellet = 500, score = scorePellet * scoreMultiplicator;
 	private int remainingPellets;
@@ -35,14 +37,16 @@ public class WorldRenderer {
 	private boolean canMove = true, isFirstRender = true, showMessageMuted = false, ghostSirenIsPlaying = false;
 	private float timeBeforeMoving = 4.5f/* 4.5 is the length of the beginning music */, timeSinceFirstRender = 0, timeSinceLastRender = 0;
 	private String extension = ".png";
+	final PacmanJV game;
 	// Music -- Probably in a music manager, maybe with a HashMap<String, Music>
 	private Music ghostSiren;
 	private Sound pacmanDeath, pacmanBeginningMusic, pacmanWakaWaka;
 	// ------------------------------ END OF VARIABLES ------------------------------
 	
 	// Constructor
-	public WorldRenderer(World world) {
+	public WorldRenderer(World world, PacmanJV pacmanJV) {
 		super();
+		game = pacmanJV;
 		this.world = world;
 		remainingPellets = this.world.getMaze().numberPellets;
 	}
@@ -63,6 +67,8 @@ public class WorldRenderer {
 		// Quit the game (exit application)
 		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE))
 			Gdx.app.exit();
+		if (Gdx.input.isKeyJustPressed(Keys.ENTER)) // Temporary
+			this.mute();
 		// Mute the sounds
 		if (Gdx.input.isKeyJustPressed(Keys.M)) {
 			if( isMuted ) {
@@ -93,6 +99,8 @@ public class WorldRenderer {
 				this.pacmanWakaWaka(false);
 				this.ghostSiren(false);
 				win = true;
+				 game.setScreen(new WinScreen());
+
 			}
 			//this.moveInky();
 			// Directions
@@ -109,8 +117,6 @@ public class WorldRenderer {
 		this.showMuted();
 		// Show score
 		this.showScore();
-		// Show if won
-		this.showWin();
 	}
 	
 	private void checkCollisions() {
@@ -245,14 +251,6 @@ public class WorldRenderer {
 			batch.end();
 		} else {
 			showMessageMuted = false;
-		}
-	}
-	private void showWin() {
-		if( win ) {
-			batch.begin();
-				scoreBitmap.setColor(1, 0, 0, 1);
-				scoreBitmap.draw(batch, "YOU WIN", 467, 200);
-			batch.end();	
 		}
 	}
 	private void showScore() {

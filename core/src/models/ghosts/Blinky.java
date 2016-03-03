@@ -6,6 +6,7 @@ import models.Ghost;
 import models.World;
 
 public class Blinky extends Ghost {
+	private boolean canEatPacman = false;
 
 	public Blinky() {
 		super(new Vector2 (192,256));
@@ -33,7 +34,7 @@ public class Blinky extends Ghost {
 		if( this.getPosition().y > pacmanPos.y)
 			this.setPosition(new Vector2(this.getPosition().x, this.getPosition().y-ghostMovementSpeed));
 		// If ghost touches pacman
-		if( (this.getPosition().x == pacmanPos.x) && (this.getPosition().y == pacmanPos.y))
+		if( (this.getPosition().x == pacmanPos.x) && (this.getPosition().y == pacmanPos.y) && canEatPacman )
 			return true;
 		return false;
 	}

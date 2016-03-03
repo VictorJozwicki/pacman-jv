@@ -48,6 +48,7 @@ public class TextureFactory {
 	public Texture getTexture(GameElement ge) {
 		return hm.get(ge.getClass());
 	}
+	
 	public void setOtherTexture( GameElement ge, String direction, String animation, String extension ) {
 		if( ge.getClass() == Pacman.class && direction != null) {
 			String textureName = null;
@@ -57,5 +58,15 @@ public class TextureFactory {
 				textureName = "pacman" + direction + extension;
 			hm.replace(Pacman.class, new Texture(Gdx.files.internal(textureName)));
 		}
+	}
+	
+	// To modify one day
+	public Texture getOtherTexture(String texture) {
+		Texture tex = null;
+		if(texture.equals("pacman"))
+			tex = new Texture(Gdx.files.internal("icons/pacman128.png"));
+		if(texture.equals("win"))
+			tex = new Texture(Gdx.files.internal("win.png"));
+		return tex;
 	}
 }
