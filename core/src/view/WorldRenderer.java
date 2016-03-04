@@ -1,6 +1,6 @@
 package view;
 
-import java.util.ArrayList;
+import java.util.Timer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -17,7 +17,6 @@ import models.SuperPellet;
 import models.World;
 import screens.GameOverScreen;
 import screens.WinScreen;
-import utility.Node;
 
 public class WorldRenderer {
 	// ------------------------------ VARIABLES ------------------------------
@@ -38,13 +37,16 @@ public class WorldRenderer {
 	private int nextDirection = 0, currentDirection = 0;
 	private int UP = 1, RIGHT = 2, DOWN = 3, LEFT = 4;
 	// Other
-	private boolean canMove = true, isFirstRender = true, showMessageMuted = false, ghostSirenIsPlaying = false;
-	private float timeBeforeMoving = 4.5f/* 4.5 is the length of the beginning music */, timeSinceFirstRender = 0, timeSinceLastRender = 0;
+	private boolean canMove = false, isFirstRender = true, showMessageMuted = false, ghostSirenIsPlaying = false;
+
+	private float timeBeforeMoving = 4.5f/* 4.5 is the length of the beginning music */, superModeTime = 10, timeSinceFirstRender = 0, timeSinceLastRender = 0, superModeTimer = 0;
 	private String extension = ".png";
 	final PacmanJV game;
 	// Music -- Probably in a music manager, maybe with a HashMap<String, Music>
 	private Music ghostSiren;
 	private Sound pacmanDeath, pacmanBeginningMusic, pacmanWakaWaka;
+	
+	Timer t;
 	// ------------------------------ END OF VARIABLES ------------------------------
 	
 	// Constructor
@@ -92,7 +94,7 @@ public class WorldRenderer {
 			// Collisions
 			this.checkCollisions();
 			// Move blinky
-			if( !dead & (world.getBlinky().move(world.getPacman().getPosition(), this.world) || world.getClyde().move(world.getPacman().getPosition(), this.world)) ) {
+			if( !dead & (world.getBlinky().move(world.getPacman().getPosition(), this.world, delta) || world.getClyde().move(world.getPacman().getPosition(), this.world, delta)) ) {
 				dead = true;
 				this.pacmanDeath(true);
 				this.pacmanWakaWaka(false);
@@ -122,17 +124,20 @@ public class WorldRenderer {
 		this.showMuted();
 		// Show score
 		this.showScore();
-		
+		if( world.superMode ) {
+			superMode(delta);
+		}
 		// Path finding
-		Vector2 goal = new Vector2(48,16);
+/*		Vector2 goal = new Vector2(48,16);
 		ArrayList<Node> path = this.world.getMaze().findPath(this.world.getPacman().getPosition(), goal);
 		batch.begin();
 			if( path != null ) {
 				for( Node p : path ) {
-					batch.draw(TextureFactory.getInstance().getOtherTexture("ghostEscaping"), p.tile.x, p.tile.y, 16, 16);
+					batch.draw(TextureFactory.getInstance().getOtherTexture("block"), p.tile.x, p.tile.y, 16, 16);
 				}
 			}
 		batch.end();
+*/
 	}
 	
 	private void checkCollisions() {
@@ -197,6 +202,21 @@ public class WorldRenderer {
 			this.world.getPacman().getPosition().add(speedVector);
 		}
 	}
+	private void superMode(float delta) {
+			superModeTimer += delta;
+			System.out.println(superModeTimer);
+			if( superModeTimer == delta )
+				TextureFactory.getInstance().setOtherTexture(null, null, "escaping", null);
+			
+			
+
+			
+			if( superModeTimer >= superModeTime ) {
+				world.superMode = false;
+				TextureFactory.getInstance().setOtherTexture(null, null, "ghostNormal", null);
+			}
+			System.out.println("SUPER MODE");
+	}
 	
 	private void pacmanAnimation() {
 		String direction = null;
@@ -235,6 +255,8 @@ public class WorldRenderer {
 				remainingPellets--;
 			}
 			if ( elementAt.getClass().equals(SuperPellet.class) ) {
+				world.superMode = true;
+				superModeTimer = 0;
 				world.getMaze().deleteElementAt(elementAt);
 				this.pacmanWakaWaka(true);
 				score = score + (scoreMultiplicator * scoreSuperPellet);
@@ -257,6 +279,7 @@ public class WorldRenderer {
 			}
 		}
 	}
+		
 	// Messages and such
 	private void showMuted() {
 		if( showMessageMuted ) {

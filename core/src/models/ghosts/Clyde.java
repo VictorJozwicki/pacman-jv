@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import models.GameElement;
 import models.Ghost;
 import models.World;
+import view.TextureFactory;
 
 public class Clyde extends Ghost {
 	private Vector2 clydeSpeedVector = new Vector2(-ghostMovementSpeed, 0);
@@ -29,7 +30,7 @@ public class Clyde extends Ghost {
 		return false;
 	}
 	
-	public boolean move(Vector2 pacmanPos, World world) {
+	public boolean move(Vector2 pacmanPos, World world, float delta) {
 		ArrayList<GameElement> l = new ArrayList<GameElement>();
 		Random rand = new Random();
 		
@@ -62,8 +63,22 @@ public class Clyde extends Ghost {
 			}
 			this.getPosition().add(clydeSpeedVector);
 			// If ghost touches pacman
-			if( (this.getPosition().x == pacmanPos.x) && (this.getPosition().y == pacmanPos.y))
-				return true;
+			if( (this.getPosition().x <= pacmanPos.x && this.getPosition().x+17 > pacmanPos.x) && (this.getPosition().y <= pacmanPos.y && this.getPosition().y+17 > pacmanPos.y))
+				if( !world.superMode )
+					return true;
+				else {
+					//TextureFactory.getInstance().setOtherTexture(this, null, "ghostDead", null);
+
+					//dead = true;
+
+					//path = world.getMaze().findPath(new Vector2((((int)position.x/16)*16), ((int)position.y/16)*16), new Vector2 (16,16));
+					//System.out.println("path size : "+path.size());
+					this.setPosition(new Vector2 (208,256));
+					TextureFactory.getInstance().setOtherTexture(this, null, "clydeNormal", null);
+					i = 0;
+					clydeSpeedVector = new Vector2();
+					randomNum = -1;
+			}
 		}
 		return false;
 	}

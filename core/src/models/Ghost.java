@@ -11,7 +11,7 @@ public class Ghost extends GameElement {
 		this.setPosition(position);
 	}
 
-	public boolean move(Vector2 position, World world) {
+	public boolean move(Vector2 position, World world, float delta) {
 		return false;
 	}
 	

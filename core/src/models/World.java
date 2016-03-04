@@ -16,7 +16,7 @@ public class World implements Iterable<GameElement> {
 	private Maze maze;
 	private Ghost blinky, pinky, inky, clyde;
 	SpriteBatch batch = new SpriteBatch();
-
+	public boolean superMode = false;
 	
 	public World() {
 		super();
