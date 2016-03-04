@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import view.TextureFactory;
 
-public class WinScreen implements Screen {
+public class GameOverScreen implements Screen {
 	private SpriteBatch batch = new SpriteBatch();
 	private BitmapFont bitmap = new BitmapFont();
 	private float score;
 			
-	public WinScreen(float score) {
+	public GameOverScreen(float score) {
 		this.score = score;
 	}
 
@@ -28,7 +28,7 @@ public class WinScreen implements Screen {
 			Gdx.app.exit();
 		batch.begin();
 			// Win
-			batch.draw(TextureFactory.getInstance().getOtherTexture("win"), 190, 200);
+			batch.draw(TextureFactory.getInstance().getOtherTexture("lose"), -50, 100);
 			// New game
 			bitmap.setColor(255, 255, 0, 1);
 			bitmap.getData().setScale((float) 1.1);

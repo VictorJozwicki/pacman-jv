@@ -1,5 +1,7 @@
 package view;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
@@ -13,7 +15,9 @@ import models.GameElement;
 import models.Pellet;
 import models.SuperPellet;
 import models.World;
+import screens.GameOverScreen;
 import screens.WinScreen;
+import utility.Node;
 
 public class WorldRenderer {
 	// ------------------------------ VARIABLES ------------------------------
@@ -93,13 +97,14 @@ public class WorldRenderer {
 				this.pacmanDeath(true);
 				this.pacmanWakaWaka(false);
 				this.ghostSiren(false);
+				game.setScreen(new GameOverScreen(score));
 			}
 			if( remainingPellets == 0 ) {
 				dead = true;
 				this.pacmanWakaWaka(false);
 				this.ghostSiren(false);
 				win = true;
-				 game.setScreen(new WinScreen());
+				game.setScreen(new WinScreen(score));
 
 			}
 			//this.moveInky();
@@ -117,6 +122,17 @@ public class WorldRenderer {
 		this.showMuted();
 		// Show score
 		this.showScore();
+		
+		// Path finding
+		Vector2 goal = new Vector2(48,16);
+		ArrayList<Node> path = this.world.getMaze().findPath(this.world.getPacman().getPosition(), goal);
+		batch.begin();
+			if( path != null ) {
+				for( Node p : path ) {
+					batch.draw(TextureFactory.getInstance().getOtherTexture("ghostEscaping"), p.tile.x, p.tile.y, 16, 16);
+				}
+			}
+		batch.end();
 	}
 	
 	private void checkCollisions() {
@@ -171,11 +187,10 @@ public class WorldRenderer {
 				} else if ( elementAtCurrent != null && elementAtCurrent.getClass().getName().equals("models.Block") ) {
 					speedVector = new Vector2(0, 0);
 				} else {
-					if( currentDirection != nextDirection ) {
+					if( currentDirection != nextDirection )
 						this.world.getPacman().getPosition().add(speedVector);
-					} else {
+					else
 						speedVector = new Vector2(0, 0);
-					}
 				}
 			}
 		} else {

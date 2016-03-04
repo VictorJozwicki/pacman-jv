@@ -67,6 +67,10 @@ public class TextureFactory {
 			tex = new Texture(Gdx.files.internal("icons/pacman128.png"));
 		if(texture.equals("win"))
 			tex = new Texture(Gdx.files.internal("win.png"));
+		if(texture.equals("ghostEscaping"))
+			tex = new Texture(Gdx.files.internal("ghostEscaping.png"));
+		if(texture.equals("lose"))
+			tex = new Texture(Gdx.files.internal("lose.png"));
 		return tex;
 	}
 }
